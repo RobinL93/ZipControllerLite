@@ -1,0 +1,43 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Settings</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.1.0/css/ui-light.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+
+    <script src="/js/settings.js"></script>
+
+</head>
+<body>
+    <!-- BEGINTEMPLATE: Template code for an empty Help Flyout. -->
+    <!-- Each Settings flyout should be defined in its own HTML file. -->
+    <!-- Set the width to 'narrow' (346px) or 'wide' (646px). -->
+    <!-- Set the background color for the header to the background color defined for your
+         app tile in the manifest. -->
+    <div id="settingsDiv" data-win-control="WinJS.UI.SettingsFlyout" aria-label="Zipabox Settings"
+         data-win-options="{settingsCommandId:'help',width:'narrow'}">
+        <div class="win-header" style="background-color:#464646">
+            <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+            <div class="win-label">Zipabox Settings</div>
+        </div>
+        <div class="win-content">
+            <div class="win-settings-section">
+                <label for="settings-username">Zipabox username</label>
+                <input id="settings-username" type="email" />
+                <label for="settings-password">ZipaBox password</label>
+                <input id="settings-password" type="password" />
+                <label for="settings-serial">ZipaBox serial (optional)</label>
+                <input id="settings-serial" />
+                <label for="settings-update">Update frequency in seconds
+                <input id="settings-update" value="10" type="range" />
+                </label>
+            </div>
+       </div>
+    </div>
+    <!-- ENDTEMPLATE -->
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="b6e38f43-323b-4a31-a586-5141bcbdee7f" Version="1.0.0.13" Publisher="CN=nej" />
+  <Properties>
+    <DisplayName>atom8ic</DisplayName>
+    <PublisherDisplayName>InfoCaption AB</PublisherDisplayName>
+    <Logo>images\120-2.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="default.html">
+      <m2:VisualElements DisplayName="atom8ic" Description="Basic dashboard application for displaying temperatures and control switches, dimmers and plug in-modules attached to Zipato Zipabox. Intended for use as always-on app on suitable Win/WinRT devices." ForegroundText="dark" BackgroundColor="#f2f2f2" Square150x150Logo="images\150.png" Square30x30Logo="images\120-3.png">
+        <m2:DefaultTile ShortName="atom8ic" Wide310x150Logo="images\310.png" DefaultSize="wide310x150Logo" Square70x70Logo="images\70.png">
+        </m2:DefaultTile>
+        <m2:SplashScreen Image="images\620.png" BackgroundColor="#f2f2f2" />
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="portrait" />
+          <m2:Rotation Preference="landscape" />
+          <m2:Rotation Preference="landscapeFlipped" />
+        </m2:InitialRotationPreference>
+      </m2:VisualElements>
+      <ApplicationContentUriRules>
+        <Rule Match="https://my.zipato.com" Type="include" />
+      </ApplicationContentUriRules>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

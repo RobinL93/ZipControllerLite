@@ -1,0 +1,50 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Settings</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.1.0/css/ui-light.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0/js/ui.js"></script>
+
+
+    <script src="/js/rooms.js"></script>
+
+</head>
+<body>
+    <!-- BEGINTEMPLATE: Template code for an empty Help Flyout. -->
+    <!-- Each Settings flyout should be defined in its own HTML file. -->
+    <!-- Set the width to 'narrow' (346px) or 'wide' (646px). -->
+    <!-- Set the background color for the header to the background color defined for your
+         app tile in the manifest. -->
+    <div id="roomsDiv" data-win-control="WinJS.UI.SettingsFlyout" aria-label="Room Settings"
+         data-win-options="{settingsCommandId:'help',width:'narrow'}">
+        <div class="win-header" style="background-color:#464646">
+            <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+            <div class="win-label">Rooms</div>
+        </div>
+        <div class="win-content">
+            <div class="win-settings-section">
+                <label for="settings-header">Header to show in app</label>
+                <input id="settings-header" />
+                <div id="checkboxarea"></div>
+                <br/>
+                <label>
+                    <input type="checkbox" id="settings-showroomtitles" />
+                    Show room names
+                </label>
+                <label>
+                    <input type="checkbox" id="settings-showsensors" />
+                    Show sensors
+                </label>
+                <label>
+                    <input type="checkbox" id="settings-showroomless" />
+                    Show roomless devices
+                </label>
+            </div>
+        </div>
+    </div>
+    <!-- ENDTEMPLATE -->
+</body>
+</html>

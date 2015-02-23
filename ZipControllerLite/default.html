@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+    // Ideas:
+// 0. Om sensor rapporterade för länge sedan, varna
+    // X 1.  Flippable / orientation
+    // X 2. Set name
+    // X 3.  Icon
+    // X 4.  Hide "hidden" 
+    // X 5.  Select room / group by room
+    // X 6.  Show wallplugs (NYC-2300 "wallplug" iso "switch")
+    // X 7.  Show clock in header
+    // 8.  Package for appstore
+    // 9.  No power fix
+    // 10. Bränna-in-skydd
+    // 11. Skala upp kontrollerna
+    // X 12. Encrypt passwordt
+    // 13. Ladda inte om vid settings, bara parsa om
+    // ?X 14. Trådsäker ajaxladdning
+    // 15. Lösenord för att förhindra terminaländring
+    // 16. Win32-app som autostartar
+    // 17. Wake-up-detektion via webcam
+    // 18. Link to my.zipabox website in iframe or in browser.
+    // X 19. Väljbart om man vill se sensorer
+    // Z 20. Pre-pass för att räkna ut grovlayout och sedan bygga HTML så att man får det jämnare mellan switch-kolumnerna.
+    // X 21. Centrera rubrikerna över kategorier
+    // 22. Ability to move and select positioning of elements (samma.js som pcy?)
+    // 23. Scenes support
+    // X 24. Warnings
+    // X 25. Stöd för virtuelal endpoints ("all ytterbelysning")
+    // 26. Only log in when neccesary
+    // X 27. Hide headers when no data
+    // 28. Option to show/hide logo
+    // 29. Move layout options to own flyout
+
+        --> 
+    <meta charset="utf-8" />
+    <title>atom8ic</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.2.0/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
+
+    <!-- ZipControllerLite references -->
+    <link href="/css/default.css" rel="stylesheet" />
+    <link href="/css/zacs.css" rel="stylesheet" />
+    <script src="/js/default.js"></script>
+
+    <script src="/js/navigator.js"></script>
+    <script src="/js/jquery-1.11.2.min.js"></script>
+    <script src="/js/SHA1.js"></script>
+    <script src="/js/timediff.js"></script>
+
+    <script src="/js/raphael.2.1.0.min.js"></script>
+    <script src="/js/justgage.1.0.1.min.js"></script>
+
+    <!--- autom8tic.js, where all cool stuff is happening -->
+    <script src="js/autom8tic.js"></script>
+
+
+</head>
+<body>
+<table width="100%">
+    <tr>
+        <td align="left">
+            <h1 id="headerText">atom8ic</h1>
+            
+        </td>
+        <td align="center">
+            <div id="warnings">
+                <center>
+                    <table>
+                        <tr>
+                            <td width="30px" valign="middle">
+                                <font size="20px">&#x26A0;</font>
+                            </td>
+                            <td width="10px"></td>
+                            <td align="left" valign="middle">
+                                <div id="warning"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </div>
+        </td>
+        <td align="right">
+            <label id="loading-ring" class="progressRing">
+                <progress style="color: white;" class="win-medium win-ring"></progress>
+            </label>
+        </td>
+        <td align="right">
+            <h1 id="clock"></h1>
+        </td>
+    </tr>
+    </table>
+    <div id="content_area">
+        <div id="colorWheel">
+
+        </div>
+        <div id="irContainer">            
+
+        </div>
+        <center>
+            <table id="endpointstable" cellpadding="20px">
+                <tr>
+                    <td>
+                        <br /><br /><br /><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="10px"></td>
+                    <td>
+                        
+                        
+                        
+                    </td>
+                    <td class="section">
+                        <center><label class="sectionhead">Temperature</label></center>
+                        <p id="temps"></p>
+                    </td>
+                    <td id="sensorscolumn" class="section">
+                        <center><label class="sectionhead">Sensors</label></center>
+                        <p id="lums"></p>
+                    </td>
+                    <td class="section">
+                        <label class="sectionhead">Switches</label>
+                        <p id="onoffs"></p>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </div>
+    <div id="toppadding"></div>
+    <div class="contenthost" id="contenthost"
+         data-win-control="Application.settingsDiv"
+         data-win-options="{home: '/html/settingsflyout.html'}"></div>
+    <p id="log"></p>
+    <div id="footer">
+        <div id="buttonholder">
+            <center>
+                <br />
+                <p id="agolabel"></p>
+                <button onclick="doRefresh()">Refresh</button>
+                <button onclick="location.reload()">Hard Refresh</button>
+                <button onclick="showSettings()">Settings</button>
+                <button onclick="showRoomSettings()">Room Settings</button>
+            </center>
+        </div>
+        <br/>
+      <center>
+          <p id="hintcredentials">&#xE10F; The Zipabox cannot be reached, enter or check credentials by tapping <a onclick="showSettings()" href="#">here</a>.</a><br /><br /></p>
+          <p id="offline">&#xE121; The panel is offline, trying to reconnect in a bit <br /><br /></p>
+        <img src="images/ic-logo.png" id="imgLogo" border="0"/>
+          <audio id="MoreAudio">
+              <source src="sound/alarm.wav" type="audio/wav" />
+          </audio>
+      </center>
+    </div>
+</body>
+</html>
+<script language="javascript">
+    //initiateRefresh();
+
+    /*
+    var g = new JustGage({
+        id: "gauge",
+        value: -20,
+        min: -40,
+        max: 40,
+        title: "-33 C",
+        gaugeColor: "#FFFFFF",
+        showMinMax: true,
+        label: "-Temperatur i stallet\n\@ 12 seconds ago",
+        levelColorsGradient: true,
+        levelcolors : [ "#4444FF", "#FFaaaa" ]
+    });
+    */
+    $("#buttonholder").hide();
+    $("#endpointstable").hide();
+    $("#hintcredentials").hide();
+    $("#offline").hide();
+    $("#warnings").hide();
+
+    hideProgress();
+    updateAgo();
+    doRefresh();
+</script>

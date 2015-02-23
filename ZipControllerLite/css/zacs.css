@@ -1,0 +1,281 @@
+﻿.switchtoggle.win-toggleswitch.win-off .win-label:before
+{
+    content: "\E07D";
+    color: gray;
+    font-weight: normal;
+}
+
+.switchtoggle.win-toggleswitch.win-on .win-label:before
+{
+    content: "\E07D";
+    color: green;
+    font-weight: normal;
+}
+
+.switchtoggle.win-toggleswitch.win-lavel .win-label:before
+{
+    content: "";
+    color: lightgreen;
+    font-weight: normal;
+}
+
+td.section {
+    vertical-align: top;
+    margin-left: 20px;
+}
+
+label.sectionhead {
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+div.tempholder {
+    text-align: center;
+    width: 200px;
+    height: 100px;
+    border-color: gray;
+    border-width: 1px;
+    margin: 4px;
+}
+div.tempfigure {
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    vertical-align: central;
+    margin:0px;
+    text-align: center;
+}
+
+
+div.agotext, p.tempname {
+    margin:5px;
+    height: 15px;
+}
+
+p.light {
+}
+
+p {
+   //transform: scale(1.1);
+   //transform-origin: 30% 30%;
+
+}
+
+td.switchcell {
+    vertical-align: top;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#imgLogo {
+    width: 5%;
+    height: 5%;
+}
+
+#colorWheel {
+    position: fixed;
+    width: 128px;
+    height: 128px;
+    background-image: url("../images/color-wheel_128x128.png");
+}
+
+
+/* The Color Controller */
+
+#irContainer {
+    position: absolute;
+    z-index: 1000;
+	margin-top: 150px;
+	width: 490px;
+	height: 580px;
+	overflow: hidden;
+	text-align: center;
+	background-color: #3B3738;
+    border-top-right-radius: 12%;
+    border-bottom-right-radius: 12%;
+}
+
+.cButton {
+	display: block;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	margin: 5px;
+}
+
+a.cButton { 
+	text-decoration: none;
+	font-family: arial;
+	font-size: 25px;
+	color: black;
+	font: bold 1.7em/100px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+a.cButton:hover { 
+	opacity: 0.7;
+} 
+
+/* RED BUTTONS */
+#redDiv {
+	height: 100%;
+	width: 100px;
+	margin: 10px;
+
+}
+
+#red1 {
+	border: 1px solid red;
+	background-color: red;
+}
+
+#red2 {
+	border: 1px solid #E82C0C;
+	background-color: #E82C0C;
+}
+
+#red3 {
+	border: 1px solid #FF530D;
+	background-color: #FF530D;
+}
+
+#red4 {
+	border: 1px solid #FF9C18;
+	background-color: #FF9C18;
+}
+
+#red5 {
+	border: 1px solid #FFD710;
+	background-color: #FFD710;
+}
+
+/* END OF RED BUTTONS*/
+
+div#redDiv, div#greenDiv {
+	float: left;
+}
+
+/* GREEN BUTTONS */
+
+#greenDiv{
+	height: 100%;
+	width: 100px;
+	margin: 10px;
+}
+
+#green1 {
+	border: 1px solid #0EFF15;
+	background-color: #0EFF15;
+}
+
+#green2 {
+	border: 1px solid #29D15A;
+	background-color: #29D15A;
+}
+
+#green3 {
+	border: 1px solid #2DD192;
+	background-color: #2DD192;
+}
+
+#green4 {
+	border: 1px solid #176B5C;
+	background-color: #176B5C;
+}
+
+#green5 {
+	border: 1px solid #0F4545;
+	background-color: #0F4545;
+}
+
+/* END OF GREEN BUTTONS */
+
+div#green, div#blue {
+	float: left;
+}
+
+/* BLUE BUTTONS */
+#blueDiv {
+	height: 100%;
+	width: 100px;
+	margin: 10px;
+}
+
+#blue1 {
+	color: white;
+	border: 1px solid #0F13A3;
+	background-color: #0F13A3;
+}
+
+#blue2 {
+	border: 1px solid #174EFF;
+	background-color: #174EFF;
+}
+
+#blue3 {
+	border: 1px solid #020B29;
+	background-color: #020B29;
+}
+
+#blue4 {
+	border: 1px solid #5C11B2;
+	background-color: #5C11B2;
+}
+
+#blue5 {
+	border: 1px solid #DB38D6;
+	background-color: #DB38D6;
+}
+
+/* END OF BLUE BUTTONS */
+
+div#blueDiv, div#whiteDiv {
+	float: left;
+}
+
+
+/* WHITE BUTTONS */
+#whiteDiv {
+	height: 100%;
+	width: 100px;
+	margin: 10px;
+}
+
+#white1 {
+	border: 1px solid black;
+	background-color: white;
+}
+
+#white2 {
+	border: 1px solid black;
+	background-color: #919086;
+}
+
+#white3 {
+	border: 1px solid black;
+	background-color: #919086;
+}
+
+#white4 {
+	border: 1px solid black;
+	background-color: #919086;
+}
+
+#white5 {
+	border: 1px solid black;
+	background-color: #919086;
+}
+
+
+/* END OF WHITE BUTTONS */
+
+
+
+
+
+
