@@ -593,7 +593,7 @@ function doSetAttribValue(uuid, state, login) {
             async: false,
             success: function (data) {
                 sRes = true;
-                //$("log").append("<br/>Got data")
+                //$("#log").append("<br/>Got data");
                 hideProgress();
                 WinJS.UI.processAll();
             },
