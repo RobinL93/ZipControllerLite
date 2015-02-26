@@ -19,17 +19,6 @@
     font-weight: normal;
 }
 
-td.section {
-    vertical-align: top;
-    margin-left: 20px;
-}
-
-label.sectionhead {
-    font-weight: bold;
-    width: 100%;
-    text-align: center;
-}
-
 div.tempholder {
     text-align: center;
     width: 200px;
@@ -110,8 +99,6 @@ td.switchcell {
     display:inline-block
 }
 
-
-
 /* Content Area */
 #contentArea {
     width: 100%;
@@ -124,13 +111,23 @@ td.switchcell {
 #endpointstable{
     border: 1px solid red;
     width: 70%;
-    height: 700px;
     margin: 30px auto;
 }
 
 
+div.section {
+    margin-left: 20px;
+    height: 700px;
+    border: 1px solid green;
+    float: left;
+}
 
 
+label.sectionhead {
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
 
 
 /* The Color Controller */

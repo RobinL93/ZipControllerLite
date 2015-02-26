@@ -57,7 +57,7 @@
     <script src="/js/justgage.1.0.1.min.js"></script>
 
     <!--- autom8tic.js -->
-    <!--<script src="js/autom8tic.js"></script>-->
+   <script src="js/autom8tic.js"></script>
 
 
 </head>
@@ -85,10 +85,31 @@
     <!-- ==== CONTENT AREA ==== -->
     <div id="contentArea">
 
+
         <div id="endpointstable">
 
-        </div>
+            <!-- Temps -->
+            <div class="section">
+                <label class="sectionhead">Temperature</label>
+                <p id="temps"></p>
+            </div>
 
+            <!-- Sensors -->
+            <div class="section" id="sensorcolumn">
+                <label class="sectionhead">Sensors</label>
+                <p id="lums"></p>
+            </div>
+
+            <!-- Switches -->
+            <div class="section">
+                <label class="sectionhead">Switches</label>
+                <p id="onoffs"></p>
+            </div>
+
+
+
+            <div style="clear: both;"></div>
+        </div>
 
     </div>
 
@@ -96,4 +117,3 @@
 
 </body>
 </html>
-
