@@ -86,6 +86,53 @@ td.switchcell {
 }
 
 
+/* ==== Header ==== */
+#header {
+    width: 100%;
+    border: 1px solid red;
+    overflow: hidden;
+}
+
+#headerText {
+    float: left;
+}
+
+#clock {
+    float: right;
+}
+
+#warnings {
+    margin: 0 auto;
+    width: 200px;
+    position: absolute;
+    left: 50%;
+    margin-left: -100px;
+    display:inline-block
+}
+
+
+
+/* Content Area */
+#contentArea {
+    width: 100%;
+    margin-top: 2px;
+    border: 1px solid red;
+}
+
+
+
+#endpointstable{
+    border: 1px solid red;
+    width: 70%;
+    height: 700px;
+    margin: 30px auto;
+}
+
+
+
+
+
+
 /* The Color Controller */
 
 #irContainer {
@@ -273,9 +320,3 @@ div#blueDiv, div#whiteDiv {
 
 
 /* END OF WHITE BUTTONS */
-
-
-
-
-
-
