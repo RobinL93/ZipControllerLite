@@ -57,7 +57,7 @@
     <script src="/js/justgage.1.0.1.min.js"></script>
 
     <!--- autom8tic.js -->
-   <script src="js/autom8tic.js"></script>
+   <script src="js/atom8tic.js"></script>
 
 
 </head>
@@ -69,7 +69,7 @@
 
         <div id="warnings">
             <div id="warning">
-                <p>THIS IS A WARNING</p>
+                <p>Warnings goes here...</p>
             </div>
         </div>
 
@@ -85,6 +85,9 @@
     <!-- ==== CONTENT AREA ==== -->
     <div id="contentArea">
 
+        <div id="colorWheel">
+
+        </div>
 
         <div id="endpointstable">
 
@@ -110,10 +113,41 @@
 
             <div style="clear: both;"></div>
         </div>
-
     </div>
 
     <!-- ==== END OF CONTENT AREA ==== -->
 
+    <p id="log"></p>
+
+    <!-- ==== FOOTER ==== -->
+    
+    <div id="footer">
+
+        <!-- Button Holder-->
+        <div id="buttonholder">
+    
+            <p id="agolabel"></p>
+            <button id="refresh">Refresh</button>
+            <button id="hardRefresh">Hard Refresh</button>
+            <button id="settings">Settings</button>
+            <button id="roomSettings">Room Settings</button>
+
+        </div>
+        
+        <div id="infoHolder">
+            <p id="hintcredentials">&#xE10F; The Zipabox cannot be reached, enter or check credentials by tapping <a onclick="showSettings()" href="#">here</a> </p>
+            <p id="offline">&#xE121; The Panel is offline! Trying to reconnect in a bit.</p>
+            <img src="images/ic-logo.png" id="imgLogo" border="0" />
+            <audio id="MoreAudio">
+                <source src="sound/alarm.wav" type="audio/wav" />
+            </audio>
+        </div>
+
+    </div>
+
+    <!-- ==== END OF FOOTER ==== -->
+
+
 </body>
 </html>
+

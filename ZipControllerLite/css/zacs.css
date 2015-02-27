@@ -55,30 +55,14 @@ td.switchcell {
     vertical-align: top;
 }
 
-#footer {
-    position: fixed;
-    bottom: 0;
-    margin-bottom: 15px;
-    width: 100%;
-}
-
 #imgLogo {
     width: 5%;
     height: 5%;
 }
 
-#colorWheel {
-    position: fixed;
-    width: 128px;
-    height: 128px;
-    background-image: url("../images/color-wheel_128x128.png");
-}
-
-
 /* ==== Header ==== */
 #header {
     width: 100%;
-    border: 1px solid red;
     overflow: hidden;
 }
 
@@ -92,7 +76,7 @@ td.switchcell {
 
 #warnings {
     margin: 0 auto;
-    width: 200px;
+    width: 300px;
     position: absolute;
     left: 50%;
     margin-left: -100px;
@@ -103,31 +87,58 @@ td.switchcell {
 #contentArea {
     width: 100%;
     margin-top: 2px;
-    border: 1px solid red;
+    border: 1px solid blue;
+    text-align: center;
 }
 
-
+/*
+#colorWheel {
+    position: fixed;
+    width: 128px;
+    height: 128px;
+    background-image: url("../images/color-wheel_128x128.png");
+}
+*/
 
 #endpointstable{
-    border: 1px solid red;
-    width: 70%;
+    display:inline-block;
     margin: 30px auto;
+    border: 1px solid red;
 }
 
 
 div.section {
     margin-left: 20px;
-    height: 700px;
-    border: 1px solid green;
+    width: 200px;
+    height: 400px;
     float: left;
 }
-
 
 label.sectionhead {
     font-weight: bold;
     width: 100%;
     text-align: center;
 }
+
+
+/* FOOTER */
+#footer {
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#buttonholder {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#infoHolder {
+    text-align: center;
+}
+
 
 
 /* The Color Controller */
