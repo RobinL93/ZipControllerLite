@@ -70,10 +70,6 @@ td.switchcell {
     float: left;
 }
 
-#clock {
-    float: right;
-}
-
 #warnings {
     margin: 0 auto;
     width: 300px;
@@ -83,11 +79,22 @@ td.switchcell {
     display:inline-block
 }
 
+#clockAndLoadingRingDiv {
+    float: right;
+}
+
+#loading-ring {
+    margin-right: 50px;
+}
+
+#clock {
+    float: right;
+}
+
 /* Content Area */
 #contentArea {
     width: 100%;
     margin-top: 2px;
-    border: 1px solid blue;
     text-align: center;
 }
 
@@ -103,7 +110,6 @@ td.switchcell {
 #endpointstable{
     display:inline-block;
     margin: 30px auto;
-    border: 1px solid red;
 }
 
 

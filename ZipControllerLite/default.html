@@ -56,8 +56,9 @@
     <script src="/js/raphael.2.1.0.min.js"></script>
     <script src="/js/justgage.1.0.1.min.js"></script>
 
-    <!--- autom8tic.js -->
-   <script src="js/atom8tic.js"></script>
+    <!--- atom8ic.js -->
+    <!--<script src="js/atom8ic.js"></script> -->
+    <script src="js/atom8ic2.js"></script>
 
 
 </head>
@@ -73,7 +74,14 @@
             </div>
         </div>
 
-        <h1 id="clock">10:00</h1>      
+
+        <div id="clockAndLoadingRingDiv">
+            <label id="loading-ring" class="progressRing">
+                <progress style="color: white;" class="win-medium win-ring"></progress>
+            </label>
+
+            <h1 id="clock">10:00</h1>
+        </div>          
 
         <div id="clear"></div>
     </div>
@@ -150,7 +158,3 @@
 
 </body>
 </html>
-<script>
-    $("#log").append("LOGGING...");
-    $("#log").append("Haxx");
-</script>
