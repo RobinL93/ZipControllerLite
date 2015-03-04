@@ -60,6 +60,7 @@ td.switchcell {
     height: 5%;
 }
 
+
 /* ==== Header ==== */
 #header {
     width: 100%;
@@ -98,14 +99,6 @@ td.switchcell {
     text-align: center;
 }
 
-/*
-#colorWheel {
-    position: fixed;
-    width: 128px;
-    height: 128px;
-    background-image: url("../images/color-wheel_128x128.png");
-}
-*/
 
 #endpointstable{
     display:inline-block;
@@ -114,16 +107,17 @@ td.switchcell {
 
 
 div.section {
-    margin-left: 20px;
+    margin-left: 35px;
     float: left;
+    text-align: left;
 }
 
 label.sectionhead {
     font-weight: bold;
     width: 100%;
+    display: inline-block;
     text-align: center;
 }
-
 
 /* FOOTER */
 #footer {
@@ -131,18 +125,37 @@ label.sectionhead {
     bottom: 0;
     margin-bottom: 15px;
     width: 100%;
+    overflow: hidden;
 }
 
 #buttonholder {
-    width: 100%;
     margin: 0 auto;
     text-align: center;
+    margin-bottom: 10px;
 }
 
 #infoHolder {
     text-align: center;
 }
 
+#colorWheel {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 128px;
+    height: 128px;
+    margin-bottom: 10px;
+    background-image: url("../images/color-wheel_128x128.png"); 
+}
+
+
+/* Media Screens*/
+@media screen and (max-device-width: 800px) and (orientation: portrait){
+    #onoffDiv {
+        margin-top: 70px;
+        margin-left: 150px;
+    }
+}
 
 
 /* The Color Controller */
@@ -330,5 +343,6 @@ div#blueDiv, div#whiteDiv {
 	background-color: #919086;
 }
 
-
 /* END OF WHITE BUTTONS */
+
+

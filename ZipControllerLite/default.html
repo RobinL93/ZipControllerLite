@@ -70,7 +70,7 @@
 
         <div id="warnings">
             <div id="warning">
-                <p>Warnings goes here...</p>
+                
             </div>
         </div>
 
@@ -93,7 +93,7 @@
     <!-- ==== CONTENT AREA ==== -->
     <div id="contentArea">
 
-        <div id="colorWheel">
+        <div id="irContainer">
 
         </div>
 
@@ -103,7 +103,7 @@
 
             <!-- Temps -->
             <div class="section">
-                <label class="sectionhead">Temperature</label>
+                <label class="sectionhead" id="lols">Temperature</label>
                 <p id="temps"></p>
             </div>
 
@@ -114,7 +114,7 @@
             </div>
 
             <!-- Switches -->
-            <div class="section">
+            <div class="section" id="onoffDiv">
                 <label class="sectionhead">Switches</label>
                 <p id="onoffs"></p>
             </div>
@@ -134,24 +134,32 @@
     <div id="footer">
 
         <!-- Button Holder-->
-        <div id="buttonholder">
-    
-            <p id="agolabel"></p>
-            <button id="refresh">Refresh</button>
-            <button id="hardRefresh">Hard Refresh</button>
-            <button id="settings">Settings</button>
-            <button id="roomSettings">Room Settings</button>
+
+        <div id="footContent">
+            <div id="buttonholder">
+
+                <p id="agolabel"></p>
+                <button id="refresh">Refresh</button>
+                <button id="hardRefresh">Hard Refresh</button>
+                <button id="settings">Settings</button>
+                <button id="roomSettings">Room Settings</button>
+
+            </div>
+
+            <div id="infoHolder">
+                <p id="hintcredentials">&#xE10F; The Zipabox cannot be reached, enter or check credentials by tapping <a onclick="showSettings()" href="#">here</a> </p>
+                <p id="offline">&#xE121; The Panel is offline! Trying to reconnect in a bit.</p>
+                <img src="images/ic-logo.png" id="imgLogo" border="0" />
+                <audio id="MoreAudio">
+                    <source src="sound/alarm.wav" type="audio/wav" />
+                </audio>
+            </div>
+        </div>
+
+        <div id="colorWheelDiv">
 
         </div>
-        
-        <div id="infoHolder">
-            <p id="hintcredentials">&#xE10F; The Zipabox cannot be reached, enter or check credentials by tapping <a onclick="showSettings()" href="#">here</a> </p>
-            <p id="offline">&#xE121; The Panel is offline! Trying to reconnect in a bit.</p>
-            <img src="images/ic-logo.png" id="imgLogo" border="0" />
-            <audio id="MoreAudio">
-                <source src="sound/alarm.wav" type="audio/wav" />
-            </audio>
-        </div>
+
 
     </div>
 

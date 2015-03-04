@@ -11,6 +11,11 @@ $(function () {
     $("#hintcredentials").hide();
     $("#offline").hide();
     $("#warnings").hide();
+    $("#irContainer").hide();
+
+    $("#colorWheelDiv").on("click", function () {
+        $("#irContainer").fadeToggle(500);
+    });
 
 
     // call some functions when page has loaded
@@ -41,6 +46,7 @@ $(function () {
 
     });
 
+    $("#log").append("appWidth: " + appWidth + "<br /> appHeight: " + appHeight + "<br />");
 
 });
 
@@ -250,13 +256,15 @@ function getRoomTitle(sRoomTitle) {
 function addOrChangeOnOffControl(uuid, title, value, sRoomTitle) {
     if ($("#" + uuid).length != 0) {
         // Update the value
-        if (value == "true") {
+        if (value === "true") {
             document.getElementById(uuid).winControl.checked = true;
         } else {
             document.getElementById(uuid).winControl.checked = false;
         }
         return "";
     } else {
+
+        $("#log").append("title: " + title + ", value: " + value + " <br/>");
         // Add the element
         var roomtitle = getRoomTitle(sRoomTitle);
         var controlHtml = "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
@@ -452,6 +460,7 @@ function updatePanel() {
     var iOnOffers = 0;
     var sDimmers = "";
     var sIrColors = "";
+    var sColorController = "";
     $("#warning").empty();
     $("#warnings").hide();
     $("#temps").empty();
@@ -472,6 +481,7 @@ function updatePanel() {
             }
 
             if (obj.clusterEndpoint.name.toLowerCase().indexOf("infra") != -1) {
+                sColorController += "<div id='colorWheel'></div>";
                 sIrColors += addRemoteController(obj.uuid);
             }
 
@@ -562,7 +572,7 @@ function updatePanel() {
     $("#lums").append(sLightMeters);
     $("#onoffs").append(sOnOffers + "</div>" + sDimmers);
     $("#irContainer").append(sIrColors);
-
+    $("#colorWheelDiv").append(sColorController);
     if (!showSensors) {
         $("#sensorcolumn").hide();
     } else {
@@ -690,6 +700,7 @@ function handleResize(eventArgs) {
     try {
         caclulatePanelLayout();
         updatePanel();
+        doRefresh();
     } catch (e) {
 
     }
