@@ -1,6 +1,5 @@
 ﻿// When page has loaded / is ready
 $(function () {
-    $("#log").append("ready <br/>");
 
     applyJQueryBindings();
     window.addEventListener("resize", handleResize);
@@ -45,9 +44,7 @@ $(function () {
         }
 
     });
-
-    $("#log").append("appWidth: " + appWidth + "<br /> appHeight: " + appHeight + "<br />");
-
+    
 });
 
 /* Global Variables */
@@ -66,7 +63,6 @@ var appData = Windows.Storage.ApplicationData.current.roamingSettings;
 var maxSwitches = 8;
 var goforrefreshnexttime = false;
 var attributeData = null;
-
 
 
 // Encrption from: http://www.javascriptsource.com/passwords/ascii-encryption-882331.html
@@ -253,7 +249,8 @@ function getRoomTitle(sRoomTitle) {
     return sResult;
 }
 
-function addOrChangeOnOffControl(uuid, title, value, sRoomTitle) {
+function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
+
     if ($("#" + uuid).length != 0) {
         // Update the value
         if (value === "true") {
@@ -263,11 +260,20 @@ function addOrChangeOnOffControl(uuid, title, value, sRoomTitle) {
         }
         return "";
     } else {
-
-        $("#log").append("title: " + title + ", value: " + value + " <br/>");
+        // $("#log").append("title: " + title + ", value: " + value + " <br/>");
         // Add the element
+
+        
         var roomtitle = getRoomTitle(sRoomTitle);
-        var controlHtml = "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+
+        var offlineOrNot = isDeviceOffline(devUiid);
+
+        var controlHtml = "";
+        if (offlineOrNot == "OFFLINE") {
+            controlHtml = "<div id='" + uuid + "' class='switchtoggle switchToggleOffline' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+        } else {
+            controlHtml = "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+        }
         return controlHtml;
     }
 }
@@ -336,6 +342,26 @@ function isRoomToBeShown(roomcode) {
 
     return sValue;
 }
+
+
+function isDeviceOffline(uuid) {
+    var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + uuid + "/status";
+    var sOnlineState = "";
+    $.ajax({
+        type: "GET",
+        url: url,
+        async: false,
+        success: function (data) {
+            sOnlineState = data.onlineState;
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            sOnlineState = "Error";
+        }
+    });
+
+    return sOnlineState;
+}
+
 
 // get rooms via api and store in rooms variable
 function getRoomsList() {
@@ -480,13 +506,13 @@ function updatePanel() {
                 sRoom = 0;
             }
 
-            if (obj.clusterEndpoint.name.toLowerCase().indexOf("infra") != -1) {
-                sColorController += "<div id='colorWheel'></div>";
-                sIrColors += addRemoteController(obj.uuid);
-            }
-
             if (isRoomToBeShown(sRoom)) {
                 var sRoomName = getRoomNameFromId(sRoom);
+
+                if (obj.clusterEndpoint.name.toLowerCase().indexOf("infra") != -1) {
+                    sColorController += "<div id='colorWheel'></div>";
+                    sIrColors += addRemoteController(obj.uuid);
+                }
 
                 if ((obj.device.name.toLowerCase().indexOf("water") != -1) || (obj.device.name.toLowerCase().indexOf("flood") != -1)) {
                     var sValue = obj.value.value;
@@ -511,7 +537,7 @@ function updatePanel() {
                 }
 
                 if ((obj.clusterEndpoint.name.toLowerCase().indexOf("off") != -1) || (obj.clusterEndpoint.name.toLowerCase().indexOf("switch") != -1)) {
-                    sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName);
+                    sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
                     iOnOffers++;
 
                     if (iOnOffers >= switchcolumnheight) {
@@ -521,7 +547,7 @@ function updatePanel() {
                 }
 
                 if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
-                    sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName);
+                    sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
                     iOnOffers++;
 
                     if (iOnOffers >= switchcolumnheight) {
