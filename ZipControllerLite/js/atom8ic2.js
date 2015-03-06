@@ -44,6 +44,10 @@ $(function () {
         }
 
     });
+
+    $(".sectionhead").on("click", function () {
+        $(this).next().fadeToggle(600);
+    });
     
 });
 
@@ -344,8 +348,8 @@ function isRoomToBeShown(roomcode) {
 }
 
 
-function isDeviceOffline(uuid) {
-    var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + uuid + "/status";
+function isDeviceOffline(deviceuuid) {
+    var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + deviceuuid + "/status";
     var sOnlineState = "";
     $.ajax({
         type: "GET",
@@ -360,6 +364,45 @@ function isDeviceOffline(uuid) {
     });
 
     return sOnlineState;
+}
+
+function getBatteryLevel(deviceuuid) {
+    var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + deviceuuid + "/status";
+    var iBatteryLevel = 0;
+    $.ajax({
+        type: "GET",
+        url: url,
+        async: false,
+        success: function (data) {
+            iBatteryLevel = data.batteryLevel;
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            iBatteryLevel = -1;
+        }
+    });
+
+    return iBatteryLevel;
+}
+
+function getBatteryIcon(batteryLevel) {
+    var sImg = "";
+    if (batteryLevel >= 80) {
+        // html code for img with battery level over 80
+        sImg = "<img src='images/ic-logo.png' id='imgLogo' border='0' />";
+    } else if (batteryLevel >= 60) {
+        // html code for img with battery level over 60
+        sImg = "Battery over 60";
+    } else if(batteryLevel >= 40) {
+        // html code for img with battery level over 40
+        sImg = "battery over 40";
+    } else if (batteryLevel >= 20) {
+        // html code for img with battery level over 20
+        sImg = "battery over 20";
+    } else {
+        sImg = "battery is less than 20!";
+    }
+    
+    return sImg;
 }
 
 
@@ -570,6 +613,9 @@ function updatePanel() {
                     var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";
                     
                     sTempMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName);
+                    var lol = getBatteryLevel(obj.device.uuid);
+
+                    $("#log").append(sName + " : " + getBatteryIcon(lol) + "<br />");
                 }
 
                 if (showSensors && (obj.uiType.endpointType.toLowerCase().indexOf("light") != -1)) {

@@ -123,6 +123,10 @@ label.sectionhead {
     text-align: center;
 }
 
+#temps {
+    overflow-y: auto;
+}
+
 /* FOOTER */
 #footer {
     position: fixed;
