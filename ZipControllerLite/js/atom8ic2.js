@@ -388,7 +388,7 @@ function getBatteryIcon(batteryLevel) {
     var sImg = "";
     if (batteryLevel >= 80) {
         // html code for img with battery level over 80
-        sImg = "<img src='images/ic-logo.png' id='imgLogo' border='0' />";
+        sImg = "Battery over 80";
     } else if (batteryLevel >= 60) {
         // html code for img with battery level over 60
         sImg = "Battery over 60";
@@ -613,9 +613,9 @@ function updatePanel() {
                     var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";
                     
                     sTempMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName);
-                    var lol = getBatteryLevel(obj.device.uuid);
+                    var batteryLevel = getBatteryLevel(obj.device.uuid);
 
-                    $("#log").append(sName + " : " + getBatteryIcon(lol) + "<br />");
+                    $("#log").append(sName + " : " + batteryLevel + "<br />");
                 }
 
                 if (showSensors && (obj.uiType.endpointType.toLowerCase().indexOf("light") != -1)) {
