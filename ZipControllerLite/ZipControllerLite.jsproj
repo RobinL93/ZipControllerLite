@@ -70,6 +70,14 @@
     <Content Include="images\color-wheel_128x128.png" />
     <Content Include="images\ic-logo.png" />
     <Content Include="images\ic-white-70x70.png" />
+    <Content Include="images\icons\bat_0.png" />
+    <Content Include="images\icons\bat_100.png" />
+    <Content Include="images\icons\bat_25.png" />
+    <Content Include="images\icons\bat_50.png" />
+    <Content Include="images\icons\bat_75.png" />
+    <Content Include="images\icons\bat_temp.png" />
+    <Content Include="images\icons\con_false.png" />
+    <Content Include="images\icons\con_true.png" />
     <Content Include="images\logo.scale-100.png" />
     <Content Include="images\smalllogo.scale-100.png" />
     <Content Include="images\splashscreen.scale-100.png" />
@@ -79,6 +87,7 @@
     <Content Include="images\Square150x150Logo.scale-80.png" />
     <Content Include="images\storelogo.scale-100.png" />
     <Content Include="images\The-Scape-Bay---Infocaption-symbol-6.png" />
+    <Content Include="images\warning.png" />
     <Content Include="images\Wide310x150Logo.scale-100.png" />
     <Content Include="images\Wide310x150Logo.scale-140.png" />
     <Content Include="images\Wide310x150Logo.scale-180.png" />
@@ -88,10 +97,10 @@
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />
     <Content Include="js\jquery-1.11.2.min.js" />
+    <Content Include="js\jquery-ui.js" />
     <Content Include="js\justgage.1.0.1.min.js" />
     <Content Include="js\raphael.2.1.0.min.js" />
     <Content Include="js\rooms.js" />
-    <Content Include="js\script.js" />
     <Content Include="js\settings.js" />
     <Content Include="js\SHA1.js" />
     <Content Include="js\timediff.js" />
