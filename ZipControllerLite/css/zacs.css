@@ -140,6 +140,10 @@ div.tempfigure {
     margin-right: 5px;  
 }
 
+.dialogBox {
+    border: 1px solid red;
+    background-color: #006699;
+}
 
 /* Blink effect */
 .blinking{
@@ -209,7 +213,7 @@ div.tempfigure {
     width: 128px;
     height: 128px;
     margin-bottom: 10px;
-    background-image: url("../images/color-wheel_128x128.png"); 
+    background-image: url("../images/ir_rgb_controller.png"); 
 }
 
 

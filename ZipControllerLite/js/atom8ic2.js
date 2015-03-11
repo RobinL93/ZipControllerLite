@@ -44,12 +44,22 @@ $(function () {
     $(".sectionhead").on("click", function () {
         $(this).next().fadeToggle(600);
     });
-
+    
+    /*
     $(document.body).on('click', '.blinking, .batteryIcon', function (event) {
+        var id = $(this).attr('id');
+        
+        var dialogBox = $("<div class='dialogBox'>ASD</div>");
+        dialogBox.dialog();
+
+        $(".dialogBox").dialog("option", "position", { my: "left top", at: "left top", of: event.target });
+
         var bClass = $(this).attr('class');
-        $("#log").append(" " + bClass);
+        $("#log").append(" " + bClass + "  ==== " + id + "<br />");
         $(this).removeClass('blinking');
     });
+    */
+
 
     // Create info/dialog box
 //    $("<div id='dialogBox'>ASD</div>");
@@ -356,6 +366,17 @@ function isRoomToBeShown(roomcode) {
     return sValue;
 }
 
+function showLowBatteryWarning(batteryLevel) {
+
+    var dialogBox = $("<div class='dialogBox'>% " + batteryLevel + " </div>");
+    dialogBox.dialog();
+
+    $(".dialogBox").dialog("option", "position", { my: "left top", at: "left top", of: window });
+
+    $(this).removeClass('blinking');
+
+}
+
 
 function isDeviceOffline(deviceuuid) {
     var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + deviceuuid + "/status";
@@ -407,6 +428,7 @@ function getBatteryStatus(batteryLevel) {
     } else if (batteryLevel >= 1) {
         // html code for img with battery level over 20
         sImg = "<img id='warningId' class='batteryIcon blinking' src='images/icons/warning.png'/>";
+        showLowBatteryWarning(batteryLevel);
     } else {
         sImg = "<img class='batteryIcon' src='images/icons/warning.png'/>";
     }
@@ -864,6 +886,7 @@ function showRoomSettings() {
 }
 
 function checkTime(i) {
+
     if (i < 10) {
         i = "0" + i;
     }
@@ -873,11 +896,13 @@ function checkTime(i) {
 
 function updateAgo() {
     $("#agolabel").text("Updated " + getTimeSinceLastRead());
+
     var today = new Date();
     var h = today.getHours();
     var m = today.getMinutes();
     h = checkTime(h);
     m = checkTime(m);
+
     var clockString = h + ":" + m;
     $("#clock").html(clockString);
     setTimeout("updateAgo();", 1000);
