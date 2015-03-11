@@ -263,30 +263,34 @@ function getRoomTitle(sRoomTitle) {
 
 function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
 
+
+
     if ($("#" + uuid).length != 0) {
+
         // Update the value
         if (value === "true") {
             document.getElementById(uuid).winControl.checked = true;
+
         } else {
             document.getElementById(uuid).winControl.checked = false;
         }
         return "";
     } else {
         // $("#log").append("title: " + title + ", value: " + value + " <br/>");
-        // Add the element
-
-        
+        // Add the element        
         var roomtitle = getRoomTitle(sRoomTitle);
+
+        var sConFalse = "<img class='connectorIcon' src='images/icons/con_false.png'/>";
+        var sConTrue = "<img class='connectorIcon' src='images/icons/con_true.png'/>";
 
         var dOffline = isDeviceOffline(devUiid);
 
         var controlHtml = "";
+        
         if (dOffline == "OFFLINE") {
-            // Add image here
-
-            controlHtml = "<img class='connectorIcon' src='images/icons/con_false.png'/><div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+            controlHtml = sConFalse + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         } else {
-            controlHtml = "<img class='connectorIcon' src='images/icons/con_true.png'/><div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+            controlHtml = sConTrue  + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         }
         return controlHtml;
     }
@@ -316,33 +320,28 @@ function addOrChangeDimmerControl(uuid, title, value, sRoomTitle) {
 function getTempColor(value) {
     var sRes = "white";
     var iValue = parseFloat(value);
-    if (iValue >= -20) {
-        sRes = "#6F95D3";
-    }
-    if (iValue >= -10) {
-        sRes = "#B5C9E8";
-    }
-    if (iValue >= -5) {
-        sRes = "#E8EEF8";
-    }
-    if (iValue >= 3) {
-        sRes = "#C9F4C3";
-    }
-    if (iValue >= 10) {
-        sRes = "73E265";
-    }
-    if (iValue >= 15) {
-        sRes = "#CCE566";
-    }
-    if (iValue >= 22) {
-        sRes = "#ABCD23";
-    }
-    if (iValue >= 27) {
-        sRes = "#E6940F";
-    }
+
+
     if (iValue >= 35) {
         sRes = "#EF0F06";
+    } else if (iValue >= 27) {
+        sRes = "#E6940F";
+    } else if (iValue >= 22) {
+        sRes = "#ABCD23";
+    } else if (iValue >= 15) {
+        sRes = "#CCE566";
+    } else if (iValue >= 10) {
+        sRes = "#73E265";
+    } else if (iValue >= 3) {
+        sRes = "#C9F4C3";
+    } else if (iValue >= -5) {
+        sRes = "#E8EEF8";
+    } else if (iValue >= -10) {
+        sRes = "#B5C9E8";
+    } else if (iValue >= -20) {
+        sRes = "#6F95D3";
     }
+
     return sRes;
 }
 
