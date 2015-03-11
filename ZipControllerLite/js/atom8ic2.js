@@ -44,6 +44,18 @@ $(function () {
     $(".sectionhead").on("click", function () {
         $(this).next().fadeToggle(600);
     });
+
+    $(document.body).on('click', '.blinking, .batteryIcon', function (event) {
+        var bClass = $(this).attr('class');
+        $("#log").append(" " + bClass);
+        $(this).removeClass('blinking');
+    });
+
+    // Create info/dialog box
+//    $("<div id='dialogBox'>ASD</div>");
+  //  $("#dialogBox").dialog();
+    //$("#box1").dialog("option", "position", { my: "left top", at: "right top", of: imgId });
+
     
 });
 
@@ -266,13 +278,15 @@ function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
         
         var roomtitle = getRoomTitle(sRoomTitle);
 
-        var offlineOrNot = isDeviceOffline(devUiid);
+        var dOffline = isDeviceOffline(devUiid);
 
         var controlHtml = "";
-        if (offlineOrNot == "OFFLINE") {
-            controlHtml = "<div id='" + uuid + "' class='switchtoggle switchToggleOffline' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+        if (dOffline == "OFFLINE") {
+            // Add image here
+
+            controlHtml = "<img class='connectorIcon' src='images/icons/con_false.png'/><div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         } else {
-            controlHtml = "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+            controlHtml = "<img class='connectorIcon' src='images/icons/con_true.png'/><div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         }
         return controlHtml;
     }
@@ -380,7 +394,7 @@ function getBatteryLevel(deviceuuid) {
     return iBatteryLevel;
 }
 
-function getBatteryIcon(batteryLevel) {
+function getBatteryStatus(batteryLevel) {
     var sImg = "";
     if (batteryLevel >= 76) {
         // html code for img with battery level over 80
@@ -388,14 +402,14 @@ function getBatteryIcon(batteryLevel) {
     } else if (batteryLevel >= 51) {
         // html code for img with battery level over 60
         sImg = "<img class='batteryIcon' src='images/icons/bat_75.png'/>";
-    } else if(batteryLevel >= 25) {
+    } else if(batteryLevel >= 26) {
         // html code for img with battery level over 40
         sImg = "<img class='batteryIcon' src='images/icons/bat_50.png'/>";
     } else if (batteryLevel >= 1) {
         // html code for img with battery level over 20
-        sImg = "<img class='batteryIcon' src='images/icons/bat_25.png'/>";
+        sImg = "<img id='warningId' class='batteryIcon blinking' src='images/icons/warning.png'/>";
     } else {
-        sImg = "<img class='batteryIcon' src='images/icons/bat_0.png'/>";
+        sImg = "<img class='batteryIcon' src='images/icons/warning.png'/>";
     }
 
     // 1 - 25, 26 - 50, 51 - 75, 76 - 100
@@ -480,17 +494,13 @@ function caclulatePanelLayout() {
                 
                 if ((obj.clusterEndpoint.name.toLowerCase().indexOf("off")) != -1 || (obj.clusterEndpoint.name.toLowerCase().indexOf("switch") != -1)) {
                     iOnOffers++;
-                }
-                if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
+                } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
                     iOnOffers++;
-                }
-                if (obj.clusterEndpoint.name.toLowerCase.indexOf("dimmer") != -1) {
+                } else if (obj.clusterEndpoint.name.toLowerCase.indexOf("dimmer") != -1) {
                     iDimmers++;
-                }
-                if (obj.uiType.endpointType.toLowerCase().indexOf("temp") != -1) {
+                } else if (obj.uiType.endpointType.toLowerCase().indexOf("temp") != -1) {
                     iTempMeters++;
-                }
-                if (showSensors && (obj.uiType.endpointType.toLowerCase().indexOf("light") != -1)) {
+                } else if (showSensors && (obj.uiType.endpointType.toLowerCase().indexOf("light") != -1)) {
                     iLightMeters++;
                 }
 
@@ -500,7 +510,7 @@ function caclulatePanelLayout() {
 
         }
     });
-
+    /*
     var numberOfColumns = Math.round(appWidth / 250);
     var my_maxswitches = Math.round((appHeight - 200) / 60) - 2;
 
@@ -514,7 +524,7 @@ function caclulatePanelLayout() {
         numberOfColumns--;
         switchcolumnheight = Math.round(iOnOffers / numberOfColumns);
     }
-
+    */
 }
 
 function updatePanel() {
@@ -553,9 +563,7 @@ function updatePanel() {
                 if (obj.clusterEndpoint.name.toLowerCase().indexOf("infra") != -1) {
                     sColorController += "<div id='colorWheel'></div>";
                     sIrColors += addRemoteController(obj.uuid);
-                }
-
-                if ((obj.device.name.toLowerCase().indexOf("water") != -1) || (obj.device.name.toLowerCase().indexOf("flood") != -1)) {
+                } else if ((obj.device.name.toLowerCase().indexOf("water") != -1) || (obj.device.name.toLowerCase().indexOf("flood") != -1)) {
                     var sValue = obj.value.value;
                     var sAgo = getReadingAgo(obj.value.timestamp);
                     var sName = obj.clusterEndpoint.name;
@@ -575,9 +583,15 @@ function updatePanel() {
                         // There is leak
                         issueWarning(sName, sGuide);
                     }
-                }
-
-                if ((obj.clusterEndpoint.name.toLowerCase().indexOf("off") != -1) || (obj.clusterEndpoint.name.toLowerCase().indexOf("switch") != -1)) {
+                } else if ((obj.clusterEndpoint.name.toLowerCase().indexOf("off") != -1) || (obj.clusterEndpoint.name.toLowerCase().indexOf("switch") != -1)) {
+                    sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
+                    iOnOffers++;
+                    console.log("ASD");
+                    if (iOnOffers >= switchcolumnheight) {
+                        sOnOffers += "</div><div class='section'>";
+                        iOnOffers = 0;
+                    }
+                } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
                     sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
                     iOnOffers++;
 
@@ -585,37 +599,21 @@ function updatePanel() {
                         sOnOffers += "</div><div class='section'>";
                         iOnOffers = 0;
                     }
-                }
 
-                if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
-                    sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
-                    iOnOffers++;
-
-                    if (iOnOffers >= switchcolumnheight) {
-                        sOnOffers += "</div><div class='section'>";
-                        iOnOffers = 0;
-                    }
-
-                }
-
-                if (obj.clusterEndpoint.name.toLowerCase().indexOf("dimmer") != -1) {
+                } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("dimmer") != -1) {
                     sDimmers += addOrChangeDimmerControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName);
-                }
-
-                if (obj.uiType.endpointType.toLowerCase().indexOf("temp") != -1) {
+                } else if (obj.uiType.endpointType.toLowerCase().indexOf("temp") != -1) {
                     var sValue = getTempAdjusted(obj.value.value);
                     var sAgo = getReadingAgo(obj.value.timestamp);
                     var sUnit = obj.config.unit;
                     var sName = obj.endpoint.name;
                     var batteryLevel = getBatteryLevel(obj.device.uuid);
 
-                    var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='batteryIconHolder'>" + getBatteryIcon(batteryLevel) + "</div><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";
+                    var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='batteryIconHolder'>" + getBatteryStatus(batteryLevel) + "</div><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";
    
                                  
                     sTempMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName);
-                }
-
-                if (showSensors && (obj.uiType.endpointType.toLowerCase().indexOf("light") != -1)) {
+                } else if (showSensors && (obj.uiType.endpointType.toLowerCase().indexOf("light") != -1)) {
                     var sValue = getTempAdjusted(obj.value.value);
                     var sAgo = getReadingAgo(obj.value.timestamp);
                     var sUnit = obj.config.unit;
@@ -634,6 +632,7 @@ function updatePanel() {
         } catch(err) {
 
         }
+
 
     });
 
