@@ -57,6 +57,7 @@ td.switchcell {
 
 #headerText {
     float: left;
+    margin-left: 20px;
 }
 
 #warnings {
@@ -76,8 +77,14 @@ td.switchcell {
     margin-right: 50px;
 }
 
+.win-ring {
+    margin-top: 10px
+}
+
+
 #clock {
     float: right;
+    margin-right: 20px;
 }
 
 /* Content Area */
@@ -144,6 +151,7 @@ div.tempfigure {
     border: 1px solid red;
     background-color: #006699;
 }
+
 
 /* Blink effect */
 .blinking{

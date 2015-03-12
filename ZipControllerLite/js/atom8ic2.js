@@ -12,6 +12,7 @@ $(function () {
     $("#warnings").hide();
     $("#irContainer").hide();
 
+
     $("#colorWheelDiv").on("click", function () {
         $("#irContainer").fadeToggle(500);
     });
@@ -26,16 +27,12 @@ $(function () {
     $("#buttonholder").on("click", function (e) {
         var id = e.target.id;
         if (id === "refresh") {
-            // refresh page
             doRefresh();
         } else if (id === "hardRefresh") {
-            // make an hard refresh on the page
             location.reload(true);
         } else if (id === "settings") {
-            // show settings
             showSettings();
         } else if (id === "roomSettings") {
-            // show room settings
             showRoomSettings();
         }
 
@@ -44,22 +41,23 @@ $(function () {
     $(".sectionhead").on("click", function () {
         $(this).next().fadeToggle(600);
     });
+  
+    /* 
     
-    /*
-    $(document.body).on('click', '.blinking, .batteryIcon', function (event) {
-        var id = $(this).attr('id');
-        
-        var dialogBox = $("<div class='dialogBox'>ASD</div>");
-        dialogBox.dialog();
+ $(document.body).on('click', '.blinking', function (event) {
+    var id = $(this).attr('id');
 
-        $(".dialogBox").dialog("option", "position", { my: "left top", at: "left top", of: event.target });
+    var dialogBox = $("<div class='dialogBox'>ASD</div>");
+    dialogBox.dialog();
 
-        var bClass = $(this).attr('class');
-        $("#log").append(" " + bClass + "  ==== " + id + "<br />");
-        $(this).removeClass('blinking');
-    });
+    $(".dialogBox").dialog("option", "position", { my: "left top", at: "left top", of: event.target });
+
+    var bClass = $(this).attr('class');
+    $("#log").append(" " + bClass + "  ==== " + id + "<br />");
+    //$(this).removeClass('blinking');
+});
+
     */
-
 
     // Create info/dialog box
 //    $("<div id='dialogBox'>ASD</div>");
@@ -366,18 +364,6 @@ function isRoomToBeShown(roomcode) {
     return sValue;
 }
 
-function showLowBatteryWarning(batteryLevel) {
-
-    var dialogBox = $("<div class='dialogBox'>% " + batteryLevel + " </div>");
-    dialogBox.dialog();
-
-    $(".dialogBox").dialog("option", "position", { my: "left top", at: "left top", of: window });
-
-    $(this).removeClass('blinking');
-
-}
-
-
 function isDeviceOffline(deviceuuid) {
     var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + deviceuuid + "/status";
     var sOnlineState = "";
@@ -414,30 +400,24 @@ function getBatteryLevel(deviceuuid) {
     return iBatteryLevel;
 }
 
-function getBatteryStatus(batteryLevel) {
+function getBatteryStatus(batteryLevel, name) {
+
     var sImg = "";
     if (batteryLevel >= 76) {
-        // html code for img with battery level over 80
         sImg = "<img class='batteryIcon' src='images/icons/bat_100.png'/>";
     } else if (batteryLevel >= 51) {
-        // html code for img with battery level over 60
         sImg = "<img class='batteryIcon' src='images/icons/bat_75.png'/>";
     } else if(batteryLevel >= 26) {
-        // html code for img with battery level over 40
         sImg = "<img class='batteryIcon' src='images/icons/bat_50.png'/>";
     } else if (batteryLevel >= 1) {
-        // html code for img with battery level over 20
         sImg = "<img id='warningId' class='batteryIcon blinking' src='images/icons/warning.png'/>";
-        showLowBatteryWarning(batteryLevel);
     } else {
         sImg = "<img class='batteryIcon' src='images/icons/warning.png'/>";
     }
 
     // 1 - 25, 26 - 50, 51 - 75, 76 - 100
-    
     return sImg;
 }
-
 
 // get rooms via api and store in rooms variable
 function getRoomsList() {
@@ -630,10 +610,13 @@ function updatePanel() {
                     var sName = obj.endpoint.name;
                     var batteryLevel = getBatteryLevel(obj.device.uuid);
 
-                    var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='batteryIconHolder'>" + getBatteryStatus(batteryLevel) + "</div><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";
-   
-                                 
-                    sTempMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName);
+                    
+
+                    var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='batteryIconHolder'>" + getBatteryStatus(batteryLevel, sName) + "</div><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";              
+
+                    sTempMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName, batteryLevel);
+
+
                 } else if (showSensors && (obj.uiType.endpointType.toLowerCase().indexOf("light") != -1)) {
                     var sValue = getTempAdjusted(obj.value.value);
                     var sAgo = getReadingAgo(obj.value.timestamp);
