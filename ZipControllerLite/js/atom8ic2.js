@@ -17,7 +17,6 @@ $(function () {
         $("#irContainer").fadeToggle(500);
     });
 
-
     // call some functions when page has loaded
     hideProgress();
     updateAgo();
@@ -83,6 +82,12 @@ var appData = Windows.Storage.ApplicationData.current.roamingSettings;
 var maxSwitches = 8;
 var goforrefreshnexttime = false;
 var attributeData = null;
+
+var audio = {};
+audio["alarm"] = new Audio();
+audio["alarm"].src = "sound/alarm.wav";
+
+
 
 
 // Encrption from: http://www.javascriptsource.com/passwords/ascii-encryption-882331.html
@@ -411,6 +416,9 @@ function getBatteryStatus(batteryLevel, name) {
         sImg = "<img class='batteryIcon' src='images/icons/bat_50.png'/>";
     } else if (batteryLevel >= 1) {
         sImg = "<img id='warningId' class='batteryIcon blinking' src='images/icons/warning.png'/>";
+        setInterval(function () {
+            playAlarmSound();
+        }, 300000);
     } else {
         sImg = "<img class='batteryIcon' src='images/icons/warning.png'/>";
     }
@@ -822,6 +830,7 @@ function doRefresh() {
     clearTimeout(actualRefreshTimer);
     showProgress();
     refreshCounter++;
+    updating = true;
     if (refreshCounter >= refreshMax) {
         location.reload();
     } else {
@@ -837,6 +846,7 @@ function initiateRefresh() {
         timeoutlapse = "5000";
     }
     refreshTimer = setTimeout("doRefresh();", timeoutlapse);
+    
 }
 
 function issueWarning(deviceName, sGuide) {
@@ -891,6 +901,14 @@ function updateAgo() {
     setTimeout("updateAgo();", 1000);
 }
 
+
+function playAlarmSound() {
+    audio["alarm"].play();
+}
+
+function stopPlayingAlarmSound() {
+    audio["alarm"].stop();
+}
 
 function getIrValue(id) {
     var value;

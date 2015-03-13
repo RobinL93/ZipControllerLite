@@ -221,9 +221,9 @@ div.tempfigure {
     width: 128px;
     height: 128px;
     margin-bottom: 10px;
+    margin-right: 20px;
     background-image: url("../images/ir_rgb_controller.png"); 
 }
-
 
 /* Media Screens*/
 @media screen and (max-device-width: 800px) and (orientation: portrait){
