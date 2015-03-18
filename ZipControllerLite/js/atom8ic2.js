@@ -65,7 +65,9 @@ var audio = {};
 audio["alarm"] = new Audio();
 audio["alarm"].src = "sound/alarm.wav";
 
-
+$.ajaxSetup({
+    async: false
+});
 
 
 // Encrption from: http://www.javascriptsource.com/passwords/ascii-encryption-882331.html
@@ -193,7 +195,6 @@ function getRoomNameFromId(roomcode) {
             sResult = room.name;       // Store the rooms name in sResult if we found its id that's equal to roomcode
         }
     });
-
     return sResult;
 }
 
@@ -444,10 +445,11 @@ function getAttributeData() {
     $.ajax({
         type: "GET",
         url: url,
+        cache: false,
         async: false,
         success: function (data) {
             attributeData = data;   // Store the data from the request in attributeData variable
-            sRes = true;
+            sRes = true
         },
         error: function (xhr, ajaxOptions, thrownError) {
             sRes = false;
@@ -525,7 +527,7 @@ function updatePanel() {
     var sDimmers = "";
     var sIrColors = "";
     var sColorController = "";
-    var sDoorSensor = "";
+    var sDoorWindowSensor = "";
     $("#warning").empty();
     $("#warnings").hide();
     $("#temps").empty();
@@ -533,7 +535,7 @@ function updatePanel() {
     $("#onoffs").empty();
     var goforrefreshnexttime = false;
 
-    var sRes = false;
+    sRes = true;
     $.each(data, function (i, obj) {
 
         sRes = true;
@@ -574,13 +576,14 @@ function updatePanel() {
                 } else if ((obj.clusterEndpoint.name.toLowerCase().indexOf("off") != -1) || (obj.clusterEndpoint.name.toLowerCase().indexOf("switch") != -1)) {
                     sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
                     iOnOffers++;
-                    console.log("ASD");
                     if (iOnOffers >= switchcolumnheight) {
                         sOnOffers += "</div><div class='section'>";
                         iOnOffers = 0;
                     }
                 } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
                     sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
+
+                    $("#log").append("r: " + sRoomName + " ");
                     iOnOffers++;
 
                     if (iOnOffers >= switchcolumnheight) {
@@ -611,7 +614,22 @@ function updatePanel() {
                     var sHtml = "<p id='" + obj.uuid + "' class='light'>" + sName + " " + sValue + " " + sUnit + " " + sAgo + "</p>";
                     sLightMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName);
                 } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("door") != -1) {
-                    $("#log").append("d value = " + obj.value.value);
+
+                    var sDoorSensorImage = "";
+                    $("#log").append("d value = " + obj.value.value + "<br />");
+                    if (obj.value.value === "true") {
+                        // It's true, so door/window is open. Add the door open image
+                        sDoorSensorImage = "<img class='doorWindowImg' src='images/dooropen.png'/>";
+                    } else {
+                        // it's false, so it's closed. Add the door closed image.
+                        sDoorSensorImage = "<img class='doorWindowImg' src='images/doorclosed.png'/>";
+                    }
+
+
+                    sHtml = "<div id=" + obj.uuid+ " class='doorWindowDiv'><div>" + obj.endpoint.name + "</div>" + sDoorSensorImage + "</div>";
+
+                    sDoorWindowSensor += addOrChangeControl(obj.uuid, sHtml, sRoomName);
+
                 }
 
             } else {
@@ -631,6 +649,7 @@ function updatePanel() {
     $("#onoffs").append(sOnOffers + "</div>" + sDimmers);
     $("#irContainer").append(sIrColors);
     $("#colorWheelDiv").append(sColorController);
+    $("#doorWindowSensor").append(sDoorWindowSensor);
     if (!showSensors) {
         $("#sensorcolumn").hide();
     } else {

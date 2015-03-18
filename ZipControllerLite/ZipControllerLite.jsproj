@@ -68,6 +68,8 @@
     <Content Include="images\620.scale-100.png" />
     <Content Include="images\70.scale-100.png" />
     <Content Include="images\color-wheel_128x128.png" />
+    <Content Include="images\dooropen.png" />
+    <Content Include="images\doorclosed.png" />
     <Content Include="images\ic-logo.png" />
     <Content Include="images\ic-white-70x70.png" />
     <Content Include="images\icons\bat_0.png" />

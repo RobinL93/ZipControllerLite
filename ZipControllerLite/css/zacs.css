@@ -154,6 +154,14 @@ div.tempfigure {
     -ms-overflow-style: none;
 }
 
+.doorWindowDiv {
+
+}
+
+.doorWindowImg {
+    width: 96px;
+    height: 96px;
+}
 
 /* Blink effect */
 .blinking{
