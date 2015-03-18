@@ -57,7 +57,7 @@ td.switchcell {
 
 #headerText {
     float: left;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 #warnings {
@@ -84,7 +84,7 @@ td.switchcell {
 
 #clock {
     float: right;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 /* Content Area */
@@ -147,9 +147,11 @@ div.tempfigure {
     margin-right: 5px;  
 }
 
-.dialogBox {
-    border: 1px solid red;
-    background-color: #006699;
+
+#temps {
+    height: 626px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
 }
 
 
@@ -214,15 +216,18 @@ div.tempfigure {
     text-align: center;
 }
 
+
+
 #colorWheel {
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 128px;
-    height: 128px;
+    height: 96px;
+    width: 96px;
     margin-bottom: 10px;
     margin-right: 20px;
-    background-image: url("../images/ir_rgb_controller.png"); 
+    background-image: url("../images/remote_controller.png");
+    background-size: 96px; 
 }
 
 /* Media Screens*/
@@ -233,21 +238,29 @@ div.tempfigure {
     }
 }
 
+@media (min-height:1080px) {
+    #temps {
+        height: 100%;
+    }
+} 
 
 /* The Color Controller */
 
 #irContainer {
     position: absolute;
     z-index: 1000;
-	margin-top: 150px;
+    left: 50%;
 	width: 490px;
 	height: 580px;
+    margin-left: -245px;
 	overflow: hidden;
 	text-align: center;
 	background-color: #3B3738;
     border-top-right-radius: 12%;
-    border-bottom-right-radius: 12%;
+    border-top-left-radius: 12%;
+    bottom: 0;
 }
+
 
 .cButton {
 	display: block;

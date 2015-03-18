@@ -13,8 +13,9 @@ $(function () {
     $("#irContainer").hide();
 
 
+
     $("#colorWheelDiv").on("click", function () {
-        $("#irContainer").fadeToggle(500);
+        $("#irContainer").slideToggle(800, "easeOutSine");
     });
 
     // call some functions when page has loaded
@@ -40,30 +41,7 @@ $(function () {
     $(".sectionhead").on("click", function () {
         $(this).next().fadeToggle(600);
     });
-  
-    /* 
-    
- $(document.body).on('click', '.blinking', function (event) {
-    var id = $(this).attr('id');
 
-    var dialogBox = $("<div class='dialogBox'>ASD</div>");
-    dialogBox.dialog();
-
-    $(".dialogBox").dialog("option", "position", { my: "left top", at: "left top", of: event.target });
-
-    var bClass = $(this).attr('class');
-    $("#log").append(" " + bClass + "  ==== " + id + "<br />");
-    //$(this).removeClass('blinking');
-});
-
-    */
-
-    // Create info/dialog box
-//    $("<div id='dialogBox'>ASD</div>");
-  //  $("#dialogBox").dialog();
-    //$("#box1").dialog("option", "position", { my: "left top", at: "right top", of: imgId });
-
-    
 });
 
 /* Global Variables */
@@ -414,16 +392,16 @@ function getBatteryStatus(batteryLevel, name) {
         sImg = "<img class='batteryIcon' src='images/icons/bat_75.png'/>";
     } else if(batteryLevel >= 26) {
         sImg = "<img class='batteryIcon' src='images/icons/bat_50.png'/>";
-    } else if (batteryLevel >= 1) {
+    } else if (batteryLevel >= 6) {
+        sImg = "<img class='batteryIcon' src='images/icons/bat_25.png'/>";
+    } else {
         sImg = "<img id='warningId' class='batteryIcon blinking' src='images/icons/warning.png'/>";
         setInterval(function () {
             playAlarmSound();
         }, 300000);
-    } else {
-        sImg = "<img class='batteryIcon' src='images/icons/warning.png'/>";
     }
 
-    // 1 - 25, 26 - 50, 51 - 75, 76 - 100
+    //0 - 5, 6 - 25, 26 - 50, 51 - 75, 76 - 100
     return sImg;
 }
 
@@ -547,6 +525,7 @@ function updatePanel() {
     var sDimmers = "";
     var sIrColors = "";
     var sColorController = "";
+    var sDoorSensor = "";
     $("#warning").empty();
     $("#warnings").hide();
     $("#temps").empty();
@@ -617,9 +596,7 @@ function updatePanel() {
                     var sUnit = obj.config.unit;
                     var sName = obj.endpoint.name;
                     var batteryLevel = getBatteryLevel(obj.device.uuid);
-
-                    
-
+                
                     var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='batteryIconHolder'>" + getBatteryStatus(batteryLevel, sName) + "</div><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";              
 
                     sTempMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName, batteryLevel);
@@ -633,8 +610,9 @@ function updatePanel() {
 
                     var sHtml = "<p id='" + obj.uuid + "' class='light'>" + sName + " " + sValue + " " + sUnit + " " + sAgo + "</p>";
                     sLightMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName);
+                } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("door") != -1) {
+                    $("#log").append("d value = " + obj.value.value);
                 }
-
 
             } else {
                 $("#" + obj.uuid).remove();
@@ -658,6 +636,7 @@ function updatePanel() {
     } else {
         $("#sensorcolumn").show();
     }
+
 
     updating = false;
 
