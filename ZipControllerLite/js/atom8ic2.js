@@ -258,7 +258,6 @@ function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
 
 
     if ($("#" + uuid).length != 0) {
-
         // Update the value
         if (value === "true") {
             document.getElementById(uuid).winControl.checked = true;
@@ -272,19 +271,23 @@ function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
         // Add the element        
         var roomtitle = getRoomTitle(sRoomTitle);
 
-        var sConFalse = "<img class='connectorIcon' src='images/icons/con_false.png'/>";
-        var sConTrue = "<img class='connectorIcon' src='images/icons/con_true.png'/>";
+        var sConFalse = "<img id='lol' class='connectorIcon' src='images/icons/con_false.png'/>";
+        var sConTrue = "<img id='lol' class='connectorIcon' src='images/icons/con_true.png'/>";
 
         var dOffline = isDeviceOffline(devUiid);
 
         var controlHtml = "";
         
         if (dOffline == "OFFLINE") {
-            controlHtml = sConFalse + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+            controlHtml = sConFalse + "<div id='" + uuid + "' class='switchtoggle switchImage' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         } else {
-            controlHtml = sConTrue  + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+            controlHtml = sConTrue + "<div id='" + uuid + "' class='switchtoggle switchImage' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         }
+
+
+
         return controlHtml;
+
     }
 }
 
