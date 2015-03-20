@@ -271,8 +271,8 @@ function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
         // Add the element        
         var roomtitle = getRoomTitle(sRoomTitle);
 
-        var sConFalse = "<img id='lol' class='connectorIcon' src='images/icons/con_false.png'/>";
-        var sConTrue = "<img id='lol' class='connectorIcon' src='images/icons/con_true.png'/>";
+        var sConFalse = "<img class='connectorIcon' src='images/icons/con_false.png'/>";
+        var sConTrue = "<img class='connectorIcon' src='images/icons/con_true.png'/>";
 
         var dOffline = isDeviceOffline(devUiid);
 
