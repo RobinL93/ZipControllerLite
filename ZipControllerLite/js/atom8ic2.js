@@ -54,6 +54,8 @@ var rooms = null;
 var showRoomTitles = true;
 var showSensors = false;
 var showRoomLess = false;
+var showAllBattery = false;
+var showOnlineWallPlugs = false;
 var appWidth = window.outerWidth;
 var appHeight = window.outerHeight;
 var appData = Windows.Storage.ApplicationData.current.roamingSettings;
@@ -129,6 +131,8 @@ function loginToBox() {
     showRoomTitles = appData.values["settings-showroomtitles"];
     showSensors = appData.values["settings-showsensors"];
     showRoomLess = appData.values["settings-showroomless"];
+    showAllBattery = appData.values["settings-showallbattery"];
+    showOnlineWallPlugs = appData.values["settings-showWallPlugOnline"];
 
     $("#headerText").text(headerText);
 
@@ -237,7 +241,7 @@ function addOrChangeControl(elementid, htmlCode, sRoomTitle) {
         // There is no element with that id, add the html code for it.
         return htmlCode;
     } else {
-        // There is an element so update the element, replace it with the html code
+        // There is an element so update the element, replace it with the html code        
         $("#" + elementid).replaceWith(htmlCode);
         return "";
     }
@@ -255,8 +259,6 @@ function getRoomTitle(sRoomTitle) {
 
 function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
 
-
-
     if ($("#" + uuid).length != 0) {
         // Update the value
         if (value === "true") {
@@ -272,16 +274,21 @@ function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
         var roomtitle = getRoomTitle(sRoomTitle);
 
         var sConFalse = "<img class='connectorIcon' src='images/icons/con_false.png'/>";
-        var sConTrue = "<img class='connectorIcon' src='images/icons/con_true.png'/>";
+        var sConTrue = "";
+        if (showOnlineWallPlugs) {
+            sConTrue = "<img class='connectorIcon' src='images/icons/con_true.png'/>";
+        } else {
+            sConTrue = "<img class='connectorIcon' src=''/>";
+        }
 
         var dOffline = isDeviceOffline(devUiid);
 
         var controlHtml = "";
         
         if (dOffline == "OFFLINE") {
-            controlHtml = sConFalse + "<div id='" + uuid + "' class='switchtoggle switchImage' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+            controlHtml = sConFalse + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         } else {
-            controlHtml = sConTrue + "<div id='" + uuid + "' class='switchtoggle switchImage' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+            controlHtml = sConTrue + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
         }
 
 
@@ -391,13 +398,21 @@ function getBatteryStatus(batteryLevel, name) {
 
     var sImg = "";
     if (batteryLevel >= 76) {
-        sImg = "<img class='batteryIcon' src='images/icons/bat_100.png'/>";
+        if (showAllBattery) {
+            sImg = "<img class='batteryIcon' src='images/icons/bat_100.png'/>";
+        }
     } else if (batteryLevel >= 51) {
-        sImg = "<img class='batteryIcon' src='images/icons/bat_75.png'/>";
+        if (showAllBattery) {
+            sImg = "<img class='batteryIcon' src='images/icons/bat_75.png'/>";
+        }
     } else if(batteryLevel >= 26) {
-        sImg = "<img class='batteryIcon' src='images/icons/bat_50.png'/>";
-    } else if (batteryLevel >= 6) {
-        sImg = "<img class='batteryIcon' src='images/icons/bat_25.png'/>";
+        if (showAllBattery) {
+            sImg = "<img class='batteryIcon' src='images/icons/bat_50.png'/>";
+        }
+    } else if (batteryLevel >= 1) {
+        if (showAllBattery) {
+            sImg = "<img class='batteryIcon' src='images/icons/bat_25.png'/>";
+        }
     } else {
         sImg = "<img id='warningId' class='batteryIcon blinking' src='images/icons/warning.png'/>";
         setInterval(function () {
@@ -533,10 +548,11 @@ function updatePanel() {
     var sDoorWindowSensor = "";
     $("#warning").empty();
     $("#warnings").hide();
+    var goforrefreshnexttime = false;
     $("#temps").empty();
     $("#lums").empty();
     $("#onoffs").empty();
-    var goforrefreshnexttime = false;
+    $("#doorWindowSensor").empty();
 
     sRes = true;
     $.each(data, function (i, obj) {
@@ -585,8 +601,6 @@ function updatePanel() {
                     }
                 } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
                     sOnOffers += addOrChangeOnOffControl(obj.uuid, obj.endpoint.name, obj.value.value, sRoomName, obj.device.uuid);
-
-                    $("#log").append("r: " + sRoomName + " ");
                     iOnOffers++;
 
                     if (iOnOffers >= switchcolumnheight) {
@@ -619,7 +633,6 @@ function updatePanel() {
                 } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("door") != -1) {
 
                     var sDoorSensorImage = "";
-                    $("#log").append("d value = " + obj.value.value + "<br />");
                     if (obj.value.value === "true") {
                         // It's true, so door/window is open. Add the door open image
                         sDoorSensorImage = "<img class='doorWindowImg' src='images/dooropen.png'/>";
@@ -630,7 +643,6 @@ function updatePanel() {
 
 
                     sHtml = "<div id=" + obj.uuid+ " class='doorWindowDiv'><div>" + obj.endpoint.name + "</div>" + sDoorSensorImage + "</div>";
-
                     sDoorWindowSensor += addOrChangeControl(obj.uuid, sHtml, sRoomName);
 
                 }

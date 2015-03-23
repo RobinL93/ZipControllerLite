@@ -82,6 +82,25 @@
                 goforrefreshnexttime = true;
             };
 
+
+
+            // Show all battery checkbox
+            var settingsShowAllBattery = document.getElementById("settings-showallbattery");
+            if (appData.values.size > 0) {
+                var sValue = "";
+                if (appData.values["settings-showallbattery"]) {
+                    sValue = appData.values["settings-showallbattery"];
+                }
+                settingsShowAllBattery.checked = sValue;
+            }
+            // Connect handler
+            settingsShowAllBattery.onchange = function () {
+                appData.values["settings-showallbattery"] = settingsShowAllBattery.checked;
+                goforrefreshnexttime = true;
+            };
+
+
+
             // Show roomless checkbox
             var settingsroomless = document.getElementById("settings-showroomless");
             if (appData.values.size > 0) {
@@ -94,6 +113,22 @@
             // Connect handler
             settingsroomless.onchange = function () {
                 appData.values["settings-showroomless"] = settingsroomless.checked;
+                goforrefreshnexttime = true;
+            };
+
+
+            //Show online wall plugs
+            var settingOnlineWallplug = document.getElementById("settings-showWallPlugOnline");
+            if (appData.values.size > 0) {
+                var sValue = "";
+                if (appData.values["settings-showWallPlugOnline"]) {
+                    sValue = appData.values["settings-showWallPlugOnline"];
+                }
+                settingOnlineWallplug.checked = sValue;
+            }
+            // Connect handler
+            settingOnlineWallplug.onchange = function () {
+                appData.values["settings-showWallPlugOnline"] = settingOnlineWallplug.checked;
                 goforrefreshnexttime = true;
             };
 
