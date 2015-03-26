@@ -4,7 +4,8 @@ $(function () {
     applyJQueryBindings();
     window.addEventListener("resize", handleResize);
 
-    // hide element when page has loaded
+
+    // hide elements
     $("#buttonholder").hide();
     $("#endpointstable").hide();
     $("#hintcredentials").hide();
@@ -13,7 +14,7 @@ $(function () {
     $("#irContainer").hide();
 
 
-
+    // When we click  on colorwheel div, open the controller
     $("#colorWheelDiv").on("click", function () {
         $("#irContainer").slideToggle(800, "easeOutSine");
     });
@@ -38,6 +39,7 @@ $(function () {
 
     });
 
+    // toggle (hide/show) sectionheads
     $(".sectionhead").on("click", function () {
         $(this).next().fadeToggle(600);
     });
@@ -63,12 +65,14 @@ var maxSwitches = 8;
 var goforrefreshnexttime = false;
 var attributeData = null;
 
+// object for the alarm sound
 var audio = {};
 audio["alarm"] = new Audio();
 audio["alarm"].src = "sound/alarm.wav";
 
 $.ajaxSetup({
-    async: false
+    async: false,
+    cache: false
 });
 
 
@@ -110,6 +114,7 @@ function decryptString(coded) {
     return output;
 }
 
+// Logging in to zipatobox
 function loginToBox() {
     var url = "http://my.zipato.com:8080/zipato-web/json/Initialize";
     var sREs = "ERROR";
@@ -136,8 +141,8 @@ function loginToBox() {
 
     $("#headerText").text(headerText);
 
+
     $.ajax({
-        
         type: "GET",
         url: url,
         async: false,
@@ -154,7 +159,6 @@ function loginToBox() {
                 loginURL += "&serial=" + serial;
             }
 
-            // Still haven't logged in yet, so we are "unknownuser"
             sRes = "unknownuser";
 
             try {
@@ -169,13 +173,13 @@ function loginToBox() {
                         if (data.success) {
                             sRes = "OK";        // Logged in, set sRes to "OK"
                         } else {
-                            sRes = "unknownuser";   
+                            sRes = "unknownuser";
                         }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-                        sRes = "unknownuser";
+                        sRes = "unknownuser";   // Not success, set sRes to "unknownuser"
                     }
-                    
+
 
                 });
             } catch (err) {
@@ -191,6 +195,7 @@ function loginToBox() {
 } // end of loginToBox();
 
 
+// Converting room id to the name of that room
 function getRoomNameFromId(roomcode) {
     var sResult = "";
     // Loop trough each room and check if we found an id that is equals to param roomcode
@@ -202,6 +207,7 @@ function getRoomNameFromId(roomcode) {
     return sResult;
 }
 
+// html code for remote controller
 function remoteControllerHtml() {
     var htmlCode = '<div id="redDiv"><a href="#" id="red1" class="cButton">R</a><a href="#" id="red2" class="cButton"></a><a href="#" id="red3" class="cButton"></a><a href="#" id="red4" class="cButton"></a><a href="#" id="red5" class="cButton"></a></div>';
     htmlCode += '<div id="greenDiv"><a href="#" id="green1" class="cButton">G</a><a href="#" id="green2" class="cButton"></a><a href="#" id="green3" class="cButton"></a><a href="#" id="green4" class="cButton"></a><a href="#" id="green5" class="cButton"></a></div>';
@@ -209,6 +215,7 @@ function remoteControllerHtml() {
     htmlCode += '<div id="whiteDiv"><a href="#" id="white1" class="cButton">W</a><a href="#" id="white2" class="cButton">Flash</a><a href="#" id="white3" class="cButton">Strobe</a><a href="#" id="white4" class="cButton">Fade</a><a href="#" id="white5" class="cButton">Smooth</a></div>';
     return htmlCode;
 }
+
 
 function getTempAdjusted(inTemp) {
     var fTemp = parseFloat(inTemp);
@@ -221,6 +228,7 @@ function getTempAdjusted(inTemp) {
     return inTemp;
 }
 
+// getting the time between now and last sync
 function getTimeSinceLastRead() {
     if (lastSync == null) {
         return "";
@@ -230,95 +238,78 @@ function getTimeSinceLastRead() {
     }
 }
 
+// Getting the time between now and given value
 function getReadingAgo(stringValue) {
     var dateStr = stringValue;
     var sTime = new Date(dateStr);
     return timeDifference(Date.now(), sTime);
 }
 
+// Add control
 function addOrChangeControl(elementid, htmlCode, sRoomTitle) {
-    if (document.getElementById(elementid) === null) {
-        // There is no element with that id, add the html code for it.
-        return htmlCode;
-    } else {
-        // There is an element so update the element, replace it with the html code        
-        $("#" + elementid).replaceWith(htmlCode);
-        return "";
-    }
+    return htmlCode;
 }
 
+// get rooms title within parenthesis
 function getRoomTitle(sRoomTitle) {
     var sResult = "";
     if (showRoomTitles) {
         if (sRoomTitle !== "") {
-            sResult =  " (" + sRoomTitle + ")";
+            sResult = " (" + sRoomTitle + ")";
         }
     }
     return sResult;
 }
 
+// Add On/Off controll
 function addOrChangeOnOffControl(uuid, title, value, sRoomTitle, devUiid) {
 
-    if ($("#" + uuid).length != 0) {
-        // Update the value
-        if (value === "true") {
-            document.getElementById(uuid).winControl.checked = true;
+    // $("#log").append("title: " + title + ", value: " + value + " <br/>");
+    // Add the element        
+    var roomtitle = getRoomTitle(sRoomTitle);
 
-        } else {
-            document.getElementById(uuid).winControl.checked = false;
-        }
-        return "";
+    var sConFalse = "<img class='connectorIcon' src='images/icons/con_false.png'/>";
+    var sConTrue = "";
+    if (showOnlineWallPlugs) {
+        sConTrue = "<img class='connectorIcon' src='images/icons/con_true.png'/>";
     } else {
-        // $("#log").append("title: " + title + ", value: " + value + " <br/>");
-        // Add the element        
-        var roomtitle = getRoomTitle(sRoomTitle);
-
-        var sConFalse = "<img class='connectorIcon' src='images/icons/con_false.png'/>";
-        var sConTrue = "";
-        if (showOnlineWallPlugs) {
-            sConTrue = "<img class='connectorIcon' src='images/icons/con_true.png'/>";
-        } else {
-            sConTrue = "<img class='connectorIcon' src=''/>";
-        }
-
-        var dOffline = isDeviceOffline(devUiid);
-
-        var controlHtml = "";
-        
-        if (dOffline == "OFFLINE") {
-            controlHtml = sConFalse + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
-        } else {
-            controlHtml = sConTrue + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
-        }
-
-
-
-        return controlHtml;
-
+        sConTrue = "<img class='connectorIcon' src=''/>";
     }
+
+    var dOffline = isDeviceOffline(devUiid);
+
+    var controlHtml = "";
+
+    if (dOffline == "OFFLINE") {
+        controlHtml = sConFalse + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+    } else {
+        controlHtml = sConTrue + "<div id='" + uuid + "' class='switchtoggle' data-win-control='WinJS.UI.ToggleSwitch' data-win-options='{title: \"" + title + roomtitle + " \", checked: " + value + "}'></div><br/>";
+    }
+
+
+
+    return controlHtml;
+
 }
 
+// Add remote controller
 function addRemoteController(uuid) {
-    if ($("#" + uuid).length != 0) {
-        return "";          // There is an element with that id that's already added, so return an empty string
-    } else {
-        var controlHtml = "<div id='" + uuid + "' class='ircolors'>" + remoteControllerHtml() + "<div><br/>";
-        return controlHtml;
-    }
+
+    var controlHtml = "<div id='" + uuid + "' class='ircolors'>" + remoteControllerHtml() + "<div><br/>";
+    return controlHtml;
+
 }
 
+// Add dimmer control
 function addOrChangeDimmerControl(uuid, title, value, sRoomTitle) {
     var roomTitle = getRoomTitle(sRoomTitle);
 
-    if ($("#" + uuid).length != 0) {
-        $("#" + uuid).val(value);
-        return "";
-    } else {
-        var controlHtml = "<label>" + title + roomTitle + "<br/><input style='width: 140px' class='.dimmer' id='" + uuid + "' type='range' value='" + value + "' /> </label>";
-        return controlHtml;
-    }
+    var controlHtml = "<label>" + title + roomTitle + "<br/><input style='width: 140px' class='.dimmer' id='" + uuid + "' type='range' value='" + value + "' /> </label>";
+    return controlHtml;
+
 }
 
+// get the color for the temp value
 function getTempColor(value) {
     var sRes = "white";
     var iValue = parseFloat(value);
@@ -347,17 +338,24 @@ function getTempColor(value) {
     return sRes;
 }
 
+
+// function to check if we showing the room with the devices/hiding the room with devices
+// If a device don't have a room, then it gets value true/false(show/hide device) from var showRoomLess(that depends on if we checked the checkbox)
 function isRoomToBeShown(roomcode) {
     var sValue = false;
+    // If device don't have room, it's returning "0" or undefined
     if ((roomcode === "0") || (roomcode === undefined)) {
+        // then we get the true / false value from showroomless devices
         sValue = showRoomLess;
     } else {
+        // else, we check if that room is checkedor not
         sValue = appData.values["settings-room-" + roomcode];
     }
 
     return sValue;
 }
 
+// Checking if a device is offline
 function isDeviceOffline(deviceuuid) {
     var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + deviceuuid + "/status";
     var sOnlineState = "";
@@ -365,6 +363,7 @@ function isDeviceOffline(deviceuuid) {
         type: "GET",
         url: url,
         async: false,
+        cache: false,
         success: function (data) {
             sOnlineState = data.onlineState;
         },
@@ -376,13 +375,17 @@ function isDeviceOffline(deviceuuid) {
     return sOnlineState;
 }
 
+// Get battery level
 function getBatteryLevel(deviceuuid) {
     var url = "https://my.zipato.com:443/zipato-web/v2/devices/" + deviceuuid + "/status";
     var iBatteryLevel = 0;
+
+    // Ajax request to get battery level
     $.ajax({
         type: "GET",
         url: url,
         async: false,
+        cache: false,
         success: function (data) {
             iBatteryLevel = data.batteryLevel;
         },
@@ -394,6 +397,7 @@ function getBatteryLevel(deviceuuid) {
     return iBatteryLevel;
 }
 
+// Get the icon for the battery status
 function getBatteryStatus(batteryLevel, name) {
 
     var sImg = "";
@@ -405,7 +409,7 @@ function getBatteryStatus(batteryLevel, name) {
         if (showAllBattery) {
             sImg = "<img class='batteryIcon' src='images/icons/bat_75.png'/>";
         }
-    } else if(batteryLevel >= 26) {
+    } else if (batteryLevel >= 26) {
         if (showAllBattery) {
             sImg = "<img class='batteryIcon' src='images/icons/bat_50.png'/>";
         }
@@ -420,7 +424,6 @@ function getBatteryStatus(batteryLevel, name) {
         }, 300000);
     }
 
-    //0 - 5, 6 - 25, 26 - 50, 51 - 75, 76 - 100
     return sImg;
 }
 
@@ -437,17 +440,17 @@ function getRoomsList() {
             cache: false,
             success: function (data) {
                 try {
-                    rooms = data;
+                    rooms = data;   // collect the data and store it in rooms
                     sRes = true;
-                } catch(err) {
+                } catch (err) {
                     sRes = false;
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 sRes = false;
             }
-        }); 
-        
+        });
+
     } catch (err) {
         sRes = false;
     }
@@ -455,6 +458,7 @@ function getRoomsList() {
     return sRes;
 }
 
+// get attributes data via API and store it in a variable so we can use it later
 function getAttributeData() {
     var sRes = false;
     var url = "https://my.zipato.com:443/zipato-web/v2/attributes/full?network=true&device=true&endpoint=true&clusterEndpoint=true&definition=true&config=true&room=true&icons=true&value=true&parent=true&children=true&full=true&type=true";
@@ -486,7 +490,7 @@ function caclulatePanelLayout() {
     var iLightMeters = 0;
     var iOnOffers = 0;
     var iDimmers = 0;
-    
+
     $.each(data, function (i, obj) {
         try {
             sRoom = "";
@@ -498,7 +502,7 @@ function caclulatePanelLayout() {
             }
             if (isRoomToBeShown(sRoom)) {
                 var sRoomName = getRoomNameFromId(sRoom);
-                
+
                 if ((obj.clusterEndpoint.name.toLowerCase().indexOf("off")) != -1 || (obj.clusterEndpoint.name.toLowerCase().indexOf("switch") != -1)) {
                     iOnOffers++;
                 } else if (obj.clusterEndpoint.name.toLowerCase().indexOf("wall") != -1) {
@@ -513,10 +517,12 @@ function caclulatePanelLayout() {
 
             }
 
-        } catch(err) {
+        } catch (err) {
 
         }
     });
+
+    // Set how many switchcolumns, depepnding on width
     /*
     var numberOfColumns = Math.round(appWidth / 250);
     var my_maxswitches = Math.round((appHeight - 200) / 60) - 2;
@@ -534,7 +540,9 @@ function caclulatePanelLayout() {
     */
 }
 
+// update the panel, adding controllers and things to the screen
 function updatePanel() {
+    // Variables
     var data = attributeData;
     var sTempMeters = "";
     var iTempMeters = 0;
@@ -549,12 +557,15 @@ function updatePanel() {
     $("#warning").empty();
     $("#warnings").hide();
     var goforrefreshnexttime = false;
+    // empty all the content
     $("#temps").empty();
     $("#lums").empty();
     $("#onoffs").empty();
     $("#doorWindowSensor").empty();
 
     sRes = true;
+
+    // Adding content
     $.each(data, function (i, obj) {
 
         sRes = true;
@@ -562,22 +573,26 @@ function updatePanel() {
             sRoom = "";
             try {
                 sRoom = obj.clusterEndpoint.room;
-            } catch(err) {
+            } catch (err) {
                 sRoom = 0;
             }
 
             if (isRoomToBeShown(sRoom)) {
                 var sRoomName = getRoomNameFromId(sRoom);
 
+                // Adding the ir sensor (remote controller)
                 if (obj.clusterEndpoint.name.toLowerCase().indexOf("infra") != -1) {
                     sColorController += "<div id='colorWheel'></div>";
                     sIrColors += addRemoteController(obj.uuid);
-                } else if ((obj.device.name.toLowerCase().indexOf("water") != -1) || (obj.device.name.toLowerCase().indexOf("flood") != -1)) {
+                }
+
+                else if ((obj.device.name.toLowerCase().indexOf("water") != -1) || (obj.device.name.toLowerCase().indexOf("flood") != -1)) {
                     var sValue = obj.value.value;
                     var sAgo = getReadingAgo(obj.value.timestamp);
                     var sName = obj.clusterEndpoint.name;
                     var sGuide = obj.clusterEndpoint.description;
                     if (sGuide.indexOf("guide:") != -1) {
+                        // If there is a guide, show it.
                         sGuide = sGuide.replace("guide:", "");
                     } else {
                         sGuide = "";
@@ -589,7 +604,7 @@ function updatePanel() {
                     }
 
                     if ((obj.value.value === true) || (obj.value.value) === "true") {
-                        // There is leak
+                        // There is leak, so show the warning
                         issueWarning(sName, sGuide);
                     }
                 } else if ((obj.clusterEndpoint.name.toLowerCase().indexOf("off") != -1) || (obj.clusterEndpoint.name.toLowerCase().indexOf("switch") != -1)) {
@@ -616,8 +631,8 @@ function updatePanel() {
                     var sUnit = obj.config.unit;
                     var sName = obj.endpoint.name;
                     var batteryLevel = getBatteryLevel(obj.device.uuid);
-                
-                    var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='batteryIconHolder'>" + getBatteryStatus(batteryLevel, sName) + "</div><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";              
+
+                    var sHtml = "<div id='" + obj.uuid + "' class='tempholder'><div class='batteryIconHolder'>" + getBatteryStatus(batteryLevel, sName) + "</div><div class='tempfigure'><font color='" + getTempColor(sValue) + "' size='40px'>" + sValue + " " + sUnit + "</font></div><div class='agotext'>" + sName + " " + sAgo + "</div></div>";
 
                     sTempMeters += addOrChangeControl(obj.uuid, sHtml, sRoomName, batteryLevel);
 
@@ -642,7 +657,7 @@ function updatePanel() {
                     }
 
 
-                    sHtml = "<div id=" + obj.uuid+ " class='doorWindowDiv'><div>" + obj.endpoint.name + "</div>" + sDoorSensorImage + "</div>";
+                    sHtml = "<div id=" + obj.uuid + " class='doorWindowDiv'><div>" + obj.endpoint.name + "</div>" + sDoorSensorImage + "</div>";
                     sDoorWindowSensor += addOrChangeControl(obj.uuid, sHtml, sRoomName);
 
                 }
@@ -652,13 +667,14 @@ function updatePanel() {
             }
 
 
-        } catch(err) {
+        } catch (err) {
 
         }
 
 
     });
 
+    // Appending controllers
     $("#temps").append(sTempMeters);
     $("#lums").append(sLightMeters);
     $("#onoffs").append(sOnOffers + "</div>" + sDimmers);
@@ -688,7 +704,7 @@ function syncWithBox() {
         try {
             caclulatePanelLayout();
             updatePanel();
-        } catch(e) {
+        } catch (e) {
             sRes = false;
         }
     }
@@ -698,12 +714,15 @@ function syncWithBox() {
 }
 
 
+// Set attribute value, call it when we want to change a value (ex: on to off)
 function setAttribValue(uuid, state) {
     clearTimeout(refreshTimer);
     showProgress();
+    // calling the doSetAttribValue that's doaing all the work
     setTimeout("doSetAttribValue ('" + uuid + "', " + state + ", false);", 300);
 }
 
+// Send ajax request to set the value
 function doSetAttribValue(uuid, state, login) {
     var sRes = false;
     var sLoginResult = "OK";
@@ -729,6 +748,7 @@ function doSetAttribValue(uuid, state, login) {
             },
             url: url,
             async: false,
+            cache: false,
             success: function (data) {
                 sRes = true;
                 hideProgress();
@@ -747,6 +767,7 @@ function doSetAttribValue(uuid, state, login) {
 
 }
 
+// Waiting for events, calls setAttribValue() to set the value
 function applyJQueryBindings() {
 
     $("#irContainer").on("click", ".cButton", function () {
@@ -762,7 +783,7 @@ function applyJQueryBindings() {
         setTimeout('$("#buttonholder").hide();', 5000);
     });
 
- 
+
     $(".switchtoggle").on("click", function () {
         if (!updating) {
             var uuid = $(this).attr("id");
@@ -859,38 +880,43 @@ function initiateRefresh() {
         timeoutlapse = "5000";
     }
     refreshTimer = setTimeout("doRefresh();", timeoutlapse);
-    
+
 }
 
 function issueWarning(deviceName, sGuide) {
     $("#warnings").show();
     $("#warning").append("<p>Sensor " + deviceName + " indicates an issue. <a class='guide' href='" + sGuide + "'> Tap here for a guide on how to resolve it.</a></p>");
-    var audio = {};					
-    audio["walk"] = new Audio();	
-    audio["walk"].src = "sound/alarm.wav";	
-    audio["walk"].addEventListener('load', function () {	
-        audio["walk"].play();							
+    var audio = {};
+    audio["walk"] = new Audio();
+    audio["walk"].src = "sound/alarm.wav";
+    audio["walk"].addEventListener('load', function () {
+        audio["walk"].play();
     });
 }
 
+// showing the loading ring
 function showProgress() {
     $("#loading-ring").show();
     WinJS.UI.processAll();
 }
 
+// hiding the loading ring
 function hideProgress() {
     $("#loading-ring").hide();
     WinJS.UI.processAll();
 }
 
+// show settings in a flyout view
 function showSettings() {
     WinJS.UI.SettingsFlyout.showSettings("settingsDiv", "settings.html");
 }
 
+// show room settings in a flyout view
 function showRoomSettings() {
     WinJS.UI.SettingsFlyout.showSettings("roomsDiv", "rooms.html")
 }
 
+// If clock is less than 10, add a 0 infront of it. ex: 9:26 will be 09:26
 function checkTime(i) {
 
     if (i < 10) {
@@ -900,6 +926,8 @@ function checkTime(i) {
     return i;
 }
 
+// setting text to show ex: "Updated 10 seconds ago", also setting the clock. 
+// When this function runs for the first time, it will call itself every 1 second.
 function updateAgo() {
     $("#agolabel").text("Updated " + getTimeSinceLastRead());
 

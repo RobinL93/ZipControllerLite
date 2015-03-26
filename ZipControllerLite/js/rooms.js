@@ -4,6 +4,7 @@
     WinJS.UI.Pages.define("/rooms.html", {
         // This function is called whenever a user navigates to this page. It
         // populates the page elements with the app's data.
+
         ready: function (element, options) {
 
 
@@ -136,12 +137,14 @@
 
         unload: function () {
             // Respond to navigations away from this page.
-
         },
 
         updateLayout: function (element, viewState, lastViewState) {
             // Respond to changes in viewState.
+            alert("asd");
         }
-    });
 
+
+    });
+    
 })();
